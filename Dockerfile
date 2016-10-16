@@ -58,5 +58,6 @@ RUN update-rc.d netatalk defaults
 EXPOSE 548 636
 
 VOLUME ["/timemachine"]
+VOLUME ["/afp"]
 
 CMD ["/usr/bin/supervisord"]

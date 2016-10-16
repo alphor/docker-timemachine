@@ -4,46 +4,21 @@ set -e
 
 # Need to initialize?
 if [ ! -e /.initialized ]; then
-    if [ -z $AFP_LOGIN ]; then
-        echo "no AFP_LOGIN specified!"
-        exit 1
-    fi
 
-    if [ -z $AFP_PASSWORD ]; then
-        echo "no AFP_PASSWORD specified!"
-        exit 1
-    fi
-
-    if [ -z $AFP_NAME ]; then
-        echo "no AFP_NAME specified!"
-        exit 1
-    fi
+    # WARNING: hard coded user with plain text file. This setup is for testing purposes ONLY!
+    
 
     # Add the user
-    useradd $AFP_LOGIN -M
-    echo $AFP_LOGIN:$AFP_PASSWORD | chpasswd
+    useradd testuser -M
+    echo testuser:easypass | chpasswd
 
-    echo "[Global]
-	mimic model = Xserve
-	log file = /var/log/afpd.log
-	log level = default:warn
-	zeroconf = no
-
-[${AFP_NAME}]
-	path = /timemachine
-	time machine = yes
-	valid users = ${AFP_LOGIN}" >> /usr/local/etc/afp.conf
-
-    if [ -n "$AFP_SIZE_LIMIT" ]; then
-        echo "
-	vol size limit = ${AFP_SIZE_LIMIT}" >> /usr/local/etc/afp.conf
-    fi
+    cp /afp/afp.conf /etc/local/etc/afp.conf
 
     touch /.initialized
 fi
 
 # Initiate the timemachine daemons
-chown -R $AFP_LOGIN:$AFP_LOGIN /timemachine
+chown -R testuser:testuser /timemachine
 
 # Clean out old locks
 /bin/rm -f /var/lock/netatalk
