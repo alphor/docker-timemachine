@@ -7,7 +7,6 @@ if [ ! -e /.initialized ]; then
 
     # WARNING: hard coded user with plain text file. This setup is for testing purposes ONLY!
     
-
     # Add the user
     useradd testuser -M
     echo testuser:easypass | chpasswd
@@ -17,8 +16,11 @@ if [ ! -e /.initialized ]; then
     touch /.initialized
 fi
 
+# make the personal directory.
+mkdir /timemachine/testuser
+
 # Initiate the timemachine daemons
-chown -R testuser:testuser /timemachine
+chown -R testuser:testuser /timemachine/testuser
 
 # Clean out old locks
 /bin/rm -f /var/lock/netatalk
